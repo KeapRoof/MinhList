@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Article index{% endblock %}
+
+{% block body %}
+    <header>
+        <a href="{{ path('app_liste_index') }}">Listes</a>
+        <a>Articles</a>
+    </header>
+    
+    
+
+    <div class="articles">
+        {% for article in articles %}
+            <div class="card" data-article-id="{{ article.id }}">
+
+                <img src="{{ asset('images/' ~ article.NomProduit ~ '.png') }}" alt={{article.NomProduit}}>
+                <div class = "detail">
+                <h2>{{ article.NomProduit }}</h2>
+                <p class="price">{{ article.prix }}€</p>
+                </div>
+                <div class="addToCart" data-article-id="{{ article.id }}">Add to cart
+                    <input class="addToCartCB" type="checkbox" class="check" >
+                </div>
+                
+                <input class="quantityHidden quantity" type="number" value="0" min="0">
+            </div>
+        {% endfor %}
+    </div>
+
+    <div id="modalAdd">
+        <h2>Choisissez une liste</h2>
+        <select id="listeSelect">
+            {% for liste in app.user.getListes() %}
+                <option value="{{ liste.getId() }}">{{ liste.getNomListe() }}</option>
+            {% endfor %}
+        </select>
+        <button id="btnCloseModalAdd">x</button>
+        <button id="btnConfirmAddToList">Ajouter</button>
+    </div>
+    
+    <button class="btnAddToList">Ajouter à la liste</button>
+
+    {% if app.user.roles[0] == 'ROLE_ADMIN' %}
+    <br><a href="{{ path('app_article_new') }}" class="createItem">Nouvelle article</a>
+    {% endif %}
+
+    
+    
+    <script src="{{ asset('app.js') }}"></script>
+{% endblock %}
+

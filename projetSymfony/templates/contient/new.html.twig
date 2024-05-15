@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Contient{% endblock %}
+
+{% block body %}
+    <h1>Create new Contient</h1>
+
+    {{ include('contient/_form.html.twig') }}
+    <div id="new">
+    <a href="{{ path('app_contient_index') }}" id="savebtn">back to list</a>
+    </div>
+{% endblock %}

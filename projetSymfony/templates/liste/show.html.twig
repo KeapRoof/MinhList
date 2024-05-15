@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Articles de la liste {{ liste.NomListe }}{% endblock %}
+
+
+{% block body %}
+<header>
+  <a>Listes</a>
+  <a href="{{ path('app_article_index') }}">Produits</a>
+</header>
+
+
+ <div class = "contenue">
+ {% set total = 0 %}
+    {% for contenue in liste.Contenue %}
+      {% set total = total + contenue.Contenue.prix * contenue.quantite %}
+    {% endfor %}
+    <h1>Articles de la liste {{ liste.NomListe }} Total: {{total}}€</h1>
+   <hr class="horizontal-bar">
+
+      
+        <div class = "cards">
+            {% for contenue in liste.Contenue %}
+            
+            <div class ="container">
+              <img src="{{ asset('images/' ~ contenue.Contenue.NomProduit ~ '.png') }}" alt={{contenue.Contenue.NomProduit}}>
+                <form method="post" action="{{ path('app_contient_delete_article', {'id': contenue.id}) }}">
+                        <button type="submit" class="supprimer">
+                            <img src="{{ asset('images/Poubelle.png') }}" alt="poubelle">
+                        </button>
+                     </form>
+                
+                <div class = "detail">
+            
+                  <p class = "price">{{ contenue.Contenue.NomProduit }}</p>
+                   <h2>{{ contenue.Contenue.prix }}€</h2>
+                 </div>
+                 <div class ="quantite">
+                    
+                    <form method="post" action="{{ path('app_contient_decrease_quantity', {'id': contenue.id}) }}">
+                        <button type="submit" class="moins">-</button>
+                    </form>
+
+                    <h3>Quantité : {{ contenue.quantite }}</h3>
+
+                    <form method="post" action="{{ path('app_contient_increase_quantity', {'id': contenue.id}) }}">
+                         <button type="submit" class="plus">+</button>
+                    </form>
+                </div>
+
+                <div class="buy">
+                    <form method="post" action="{{ path('app_contient_buy', {'id': contenue.id}) }}">
+                       
+                        {% if contenue.acheter %}
+                            <button type="submit" class="acheter-true">Acheter</button>
+                        {% else %}
+                            <button type="submit" class="acheter-false">Acheter</button>
+                        {% endif %}
+                        
+                    </form>
+                </div>
+
+                  
+            </div>
+            {% endfor %}
+            </div>
+            
+                       
+        
+ </div>
+    <a href="{{ path('app_liste_index') }}">Retour aux listes</a>
+   
+{% endblock %}
